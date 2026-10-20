@@ -84,9 +84,13 @@ impl Version {
         Some(Version::new(major, minor, patch))
     }
 
-    /// The version this binary was built as: the workspace's.
+    /// The version this binary was built as: the workspace's. A build
+    /// suffix after the first `-` - a fork's mark such as `0.2.8-ts.2` -
+    /// is not part of the number and is dropped before reading it.
     pub fn current() -> Version {
-        Version::parse(env!("CARGO_PKG_VERSION")).unwrap_or(Version::new(0, 0, 0))
+        let built = env!("CARGO_PKG_VERSION");
+        let numbers = built.split('-').next().unwrap_or(built);
+        Version::parse(numbers).unwrap_or(Version::new(0, 0, 0))
     }
 
     /// The release's tag: `v0.2.5`.
