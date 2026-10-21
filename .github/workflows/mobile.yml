@@ -124,14 +124,14 @@ jobs:
       - name: Read the version
         id: version
         run: |
-          version=$(sed -n 's/^version = \"\(.*\)\"/\1/p' src/Cargo.toml | head -1)
+          version=$(grep -m1 '^version = ' src/Cargo.toml | grep -Eo '[0-9.]+' | head -1)
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "Building PreCap Studio $version for ${{ matrix.target }}"
       # The toolchain src/rust-toolchain.toml pins, installed by name, with
       # the phone's standard library.
       - name: The pinned toolchain
         id: toolchain
-        run: echo "channel=$(sed -n 's/^channel = \"\(.*\)\"/\1/p' src/rust-toolchain.toml)" >> "$GITHUB_OUTPUT"
+        run: echo channel=$(grep -m1 '^channel = ' src/rust-toolchain.toml | grep -Eo '[0-9.]+' | head -1) >> $GITHUB_OUTPUT
       - uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # master (v1), 2026-10-09
         with:
           toolchain: ${{ steps.toolchain.outputs.channel }}
@@ -352,12 +352,12 @@ jobs:
       - name: Read the version
         id: version
         run: |
-          version=$(sed -n 's/^version = \"\(.*\)\"/\1/p' src/Cargo.toml | head -1)
+          version=$(grep -m1 '^version = ' src/Cargo.toml | grep -Eo '[0-9.]+' | head -1)
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "Building PreCap Studio $version for aarch64-apple-ios"
       - name: The pinned toolchain
         id: toolchain
-        run: echo "channel=$(sed -n 's/^channel = \"\(.*\)\"/\1/p' src/rust-toolchain.toml)" >> "$GITHUB_OUTPUT"
+        run: echo channel=$(grep -m1 '^channel = ' src/rust-toolchain.toml | grep -Eo '[0-9.]+' | head -1) >> $GITHUB_OUTPUT
       - uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # master (v1), 2026-10-09
         with:
           toolchain: ${{ steps.toolchain.outputs.channel }}
@@ -463,7 +463,7 @@ jobs:
       - name: The pinned toolchain
         id: toolchain
         timeout-minutes: 1
-        run: echo "channel=$(sed -n 's/^channel = \"\(.*\)\"/\1/p' src/rust-toolchain.toml)" >> "$GITHUB_OUTPUT"
+        run: echo channel=$(grep -m1 '^channel = ' src/rust-toolchain.toml | grep -Eo '[0-9.]+' | head -1) >> $GITHUB_OUTPUT
       - uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # master (v1), 2026-10-09
         timeout-minutes: 10
         with:
