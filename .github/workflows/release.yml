@@ -67,7 +67,7 @@ jobs:
           TAG: ${{ inputs.tag || github.ref_name }}
         run: |
           tag="$TAG"
-          version=$(sed -n 's/^version = \"\(.*\)\"/\1/p' src/Cargo.toml | head -1)
+          version=$(grep -m1 '^version = ' src/Cargo.toml | grep -Eo '[0-9.]+' | head -1)
           # The tag is the version, or the version with a pre-release
           # suffix: v0.2.1 and v0.2.1-alpha.22 both belong to 0.2.1.
           case "$tag" in
